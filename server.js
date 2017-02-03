@@ -3,10 +3,11 @@ var os = require('os');
 var app = express();
 
 app.get('/', function(req, res){
-    var ipaddress = os.networkInterfaces().eth0[0].address;
-    var language = req.acceptsLanguages('en-US','en-GB', 'ru', 'uk', 'ru-mo', 'be' ); 
-    //var language = req.headers['accept-language'];//req.acceptsLanguages;
-    var software = os.platform()+': '+ os.release();
+    var ipaddress = req.headers['x-forwarded-for'];//os.networkInterfaces().eth0[0].address;
+    //var language = req.acceptsLanguages('en-US','en-GB', 'ru', 'uk', 'ru-mo', 'be' ); 
+    var language = req.headers['accept-language'].split(',')[0];//req.acceptsLanguages;
+    var software = req.headers['user-agent'].split(')')[0].split('(')[1];
+    //os.platform()+': '+ os.release();
     
     var result = {
         ipaddress: ipaddress,
